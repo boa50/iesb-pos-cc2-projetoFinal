@@ -3,7 +3,7 @@ from ibm_watson import SpeechToTextV1
 from ibm_cloud_sdk_core.authenticators import IAMAuthenticator
 import configparser
 
-def microfone_escuta(algoritmo='ibm'):
+def microfone_escuta(servico='ibm'):
     #Habilita o microfone
     microfone = sr.Recognizer()
 
@@ -14,7 +14,7 @@ def microfone_escuta(algoritmo='ibm'):
         
         audio = microfone.listen(source)
     try:
-        if algoritmo == 'ibm':
+        if servico == 'ibm':
             config = configparser.ConfigParser()
             config.read('config.ini')
 

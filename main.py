@@ -1,32 +1,3 @@
-########## Procedimentos de instalação ############
-##### Pacotes #####
-### Pip
-# pip install SpeechRecognition
-# pip install pyaudio
-# pip install googletrans
-
-### Anaconda
-# conda install -c conda-forge speechrecognition
-# conda install -c anaconda pyaudio
-# conda install -c conda-forge googletrans
-
-### Comum
-# pip install ibm-watson
-# pip install gTTS
-# pip install pygame
-####################
-
-
-##### Arquivos #####
-# Criar um arquivo config.ini na raiz do projeto com o conteúdo:
-# [SPEECH2TEXT]
-# API_KEY={sua-api-key}
-#
-# [TEXT2SPEECH]
-# API_KEY={sua-api-key}
-####################
-###################################################
-
 ################### Referências ###################
 # https://letscode-academy.com/blog/speech-recognition-com-python/
 # https://www.pragnakalp.com/speech-recognition-speech-to-text-python-using-google-api-wit-ai-ibm-cmusphinx/
@@ -35,7 +6,7 @@
 
 from microfone_escuta import microfone_escuta
 from audio_fala import audio_fala
-from frase_processa import frase_inverte, frase_traduz
+from frase_processa import frase_traduz
 import unicodedata
 
 idiomas = {
@@ -47,25 +18,51 @@ idiomas = {
     'italiano': 'it'
 }
 
+def idioma_altera():
+    idioma_input = input('Digite o idioma para o qual quer traduzir\n\
+Idiomas disponíveis: português, inglês, japonês, espanhol, alemão, italiano\n\n')
+
+    idioma_input_processed = ''.join(ch for ch in unicodedata.normalize('NFKD', idioma_input) 
+        if not unicodedata.combining(ch))
+    idioma_input_processed = idioma_input.lower()
+
+    return [idioma_input, idioma_input_processed]
+
+def frase_fala(idioma_input_processed):
+    ### Há um parâmetro indicando o servico a ser utilizado, por padrão usa-se o da IBM
+    frase = microfone_escuta()
+
+    idioma = idiomas[idioma_input_processed]
+
+    if idioma != idiomas['portugues']:
+        frase = frase_traduz(frase, idioma)
+
+    ### Há um parâmetro indicando o servico a ser utilizado, por padrão usa-se o da IBM
+    audio_fala(frase, idioma)
+
+
+
 print()
 print('-'*50)
 print('TRADUTOR DE FRASES')
 print('-'*50)
 
-idioma_input = input('Digite o idioma para o qual quer traduzir\n\
-Idiomas disponíveis: português, inglês, japonês, espanhol, alemão, italiano\n\n')
+idiomas_retorno = idioma_altera()
+idioma_input = idiomas_retorno[0]
+idioma_input_processed = idiomas_retorno[1]
 
-idioma_input = ''.join(ch for ch in unicodedata.normalize('NFKD', idioma_input) 
-    if not unicodedata.combining(ch))
-idioma_input = idioma_input.lower()
+frase_fala(idioma_input_processed)
 
-# frase = microfone_escuta()
-frase = 'Hoje, vou ao parque.'
+opcao = ''
 
-idioma = idiomas[idioma_input]
+while opcao != 's':
+    print('\n\n\nIdioma escolhido:', idioma_input)
+    print('O que você quer fazer agora?')
+    opcao = input('Digite 1 para falar outra frase, 2 para trocar o idioma, e "s" para sair): ')
 
-# frase = frase_inverte(frase)
-if idioma != idiomas['portugues']:
-    frase = frase_traduz(frase, idioma)
-
-audio_fala(frase, idioma)
+    if opcao == '1':
+        frase_fala(idioma_input_processed)
+    elif opcao == '2':
+        idiomas_retorno = idioma_altera()
+        idioma_input = idiomas_retorno[0]
+        idioma_input_processed = idiomas_retorno[1]

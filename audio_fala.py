@@ -6,10 +6,10 @@ import pygame
 from pygame import mixer
 import configparser
 
-def audio_fala(texto, language='pt-br', algoritimo='ibm'):
+def audio_fala(texto, language='pt-br', servico='ibm'):
     audio_path = 'audio.mp3'
     
-    if algoritimo == 'ibm':
+    if servico == 'ibm':
         config = configparser.ConfigParser()
         config.read('config.ini')
 
