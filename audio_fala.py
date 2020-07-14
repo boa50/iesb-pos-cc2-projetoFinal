@@ -1,13 +1,10 @@
-import speech_recognition as sr
 from gtts import gTTS
 from ibm_watson import TextToSpeechV1
 from ibm_cloud_sdk_core.authenticators import IAMAuthenticator
-import pygame
-from pygame import mixer
 import configparser
 
 def audio_fala(texto, language='pt-br', servico='ibm'):
-    audio_path = 'audio.mp3'
+    audio_path = 'static/audio.mp3'
     
     if servico == 'ibm':
         config = configparser.ConfigParser()
@@ -33,13 +30,3 @@ def audio_fala(texto, language='pt-br', servico='ibm'):
     else:
         tts = gTTS(texto, lang=language)
         tts.save(audio_path)
-
-
-    print("Estou falando...")
-    
-    #Da play ao audio
-    mixer.init()
-    mixer.music.load(audio_path)
-    mixer.music.play()
-    while pygame.mixer.music.get_busy(): 
-        pygame.time.Clock().tick(10)
