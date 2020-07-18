@@ -20,10 +20,7 @@ def microfone_escuta(audio_blob=''):
         
         frase = speech_recognition_results['results'][0]['alternatives'][0]['transcript']
         
-        print("Você disse: " + frase)
-
         return frase
         
     except:
-        print("Não Entendi")
         return 'Não entendi o que você disse'

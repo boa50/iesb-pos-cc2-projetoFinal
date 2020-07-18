@@ -24,6 +24,5 @@ def audio_fala(texto, language='pt-br'):
 
     voz = vozes[language]
 
-    with open(audio_path, 'wb') as audio_file:
-        audio_file.write(text_to_speech.synthesize(texto, voice=voz, accept='audio/mp3').get_result().content)
+    return text_to_speech.synthesize(texto, voice=voz, accept='audio/mp3').get_result().content
     
